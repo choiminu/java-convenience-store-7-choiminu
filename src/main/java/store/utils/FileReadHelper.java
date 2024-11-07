@@ -8,11 +8,13 @@ import java.util.List;
 public class FileReadHelper {
     private static final int HEADER = 1;
 
-    public List<String> readLines(String path) throws IOException {
+    public List<String> readLines(String path) {
         try (BufferedReader br = new BufferedReader(new FileReader(path))) {
             return br.lines()
                     .skip(HEADER)
                     .toList();
+        } catch (IOException e) {
+            throw new IllegalArgumentException("에러 발생");
         }
     }
 }

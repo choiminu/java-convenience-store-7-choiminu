@@ -1,6 +1,5 @@
 package store.repository.loader;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import store.domain.product.Product;
@@ -18,7 +17,7 @@ public class ProductLoader implements Loader<List<Product>> {
     }
 
     @Override
-    public List<Product> load(String path) throws IOException {
+    public List<Product> load(String path) {
         List<Product> products = new ArrayList<>();
         List<String> lines = fileReadHelper.readLines(path);
 
