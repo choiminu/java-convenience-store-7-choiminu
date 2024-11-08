@@ -1,5 +1,7 @@
 package store.utils;
 
+import java.util.HashMap;
+import java.util.Map;
 import store.domain.product.Product;
 
 public class ProductParser {
@@ -25,5 +27,18 @@ public class ProductParser {
             return null;
         }
         return promotion;
+    }
+
+    public Map<String, Integer> buyParser(String input) {
+        Map<String, Integer> map = new HashMap<>();
+        String[] split = input.split(",");
+
+        for (String string : split) {
+            string = string.replaceAll("[\\[\\]]", "");
+            String[] split1 = string.split("-");
+            map.put(split1[0], Integer.parseInt(split1[1]));
+        }
+
+        return map;
     }
 }
