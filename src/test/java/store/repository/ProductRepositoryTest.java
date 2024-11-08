@@ -3,6 +3,7 @@ package store.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -71,5 +72,36 @@ class ProductRepositoryTest {
         assertThat(findProduct.getPrice()).isEqualTo(productPrice);
         assertThat(findProduct.getStockQuantity()).isEqualTo(productQuantity);
         assertThat(findProduct.getPromotion()).isEqualTo(productPromotion);
+    }
+
+    @Test
+    public void 상품_이름으로_조회() {
+        //given
+        Long productId = 0L;
+        String productName = "콜라";
+        int productPrice = 1000;
+        int productQuantity = 10;
+        String productPromotion = "탄산2+1";
+
+        //when
+        Product findProduct = productRepository.findByName(productName);
+
+        //then
+        assertThat(findProduct.getId()).isEqualTo(productId);
+        assertThat(findProduct.getName()).isEqualTo(productName);
+        assertThat(findProduct.getPrice()).isEqualTo(productPrice);
+        assertThat(findProduct.getStockQuantity()).isEqualTo(productQuantity);
+        assertThat(findProduct.getPromotion()).isEqualTo(productPromotion);
+    }
+
+    @Test
+    public void 상품_이름으로_조회_예외() {
+        //given
+        String productName = "없는상품";
+
+        //then when
+        Assertions.assertThatThrownBy(() -> productRepository.findByName(productName))
+                .isInstanceOf(IllegalArgumentException.class);
+
     }
 }

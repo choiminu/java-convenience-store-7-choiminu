@@ -36,4 +36,14 @@ public class ProductRepository {
     public Product findById(Long id) {
         return products.get(id);
     }
+
+    public Product findByName(String name) {
+        for (Product value : products.values()) {
+            if (value.getName().equals(name)) {
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("존재하지 않는 상품입니다. 다시 입력해 주세요.");
+    }
+
 }
