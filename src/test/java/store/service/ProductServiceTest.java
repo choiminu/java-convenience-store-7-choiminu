@@ -1,23 +1,27 @@
-package store.repository;
+package store.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import store.domain.product.Product;
+import store.repository.ProductRepository;
 import store.repository.loader.ProductLoader;
 import store.utils.FileReadHelper;
 import store.utils.ProductParser;
 
-class ProductRepositoryTest {
+class ProductServiceTest {
 
-    private final FileReadHelper fileReadHelper = new FileReadHelper();
-    private final ProductParser productParser = new ProductParser();
-    private final ProductLoader productLoader = new ProductLoader(productParser, fileReadHelper);
-    private final ProductRepository productRepository = new ProductRepository(productLoader);
+    ProductService service;
+    ProductRepository repository;
 
+    @BeforeEach
+    void init() {
+        repository = new ProductRepository(new ProductLoader(new ProductParser(), new FileReadHelper()));
+        service = new ProductService(repository);
+    }
 
     @ParameterizedTest
     @CsvSource({
@@ -40,7 +44,7 @@ class ProductRepositoryTest {
     })
     public void 상품재고_모두_조회(int index, String itemName, int price, int stockQuantity, String promotion) {
         //given
-        List<Product> productList = productRepository.findAll();
+        List<Product> productList = service.findAllProduct();
         if (promotion.equals("null")) {
             promotion = null;
         }
@@ -53,23 +57,4 @@ class ProductRepositoryTest {
         assertThat(productList.get(index).getPromotion()).isEqualTo(promotion);
     }
 
-    @Test
-    public void 상품재고_단건_조회() {
-        //given
-        Long productId = 1L;
-        String productName = "콜라";
-        int productPrice = 1000;
-        int productQuantity = 10;
-        String productPromotion = null;
-
-        //when
-        Product findProduct = productRepository.findById(1L);
-
-        //then
-        assertThat(findProduct.getId()).isEqualTo(productId);
-        assertThat(findProduct.getName()).isEqualTo(productName);
-        assertThat(findProduct.getPrice()).isEqualTo(productPrice);
-        assertThat(findProduct.getStockQuantity()).isEqualTo(productQuantity);
-        assertThat(findProduct.getPromotion()).isEqualTo(productPromotion);
-    }
 }

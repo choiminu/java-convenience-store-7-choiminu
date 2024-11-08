@@ -32,4 +32,8 @@ public class ProductRepository {
     public List<Product> findAll() {
         return List.copyOf(products.values());
     }
+
+    public Product findById(Long id) {
+        return products.get(id);
+    }
 }
