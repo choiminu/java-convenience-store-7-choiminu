@@ -45,6 +45,7 @@ class ProductRepositoryTest {
         }
 
         //when then
+        assertThat(productList.get(index).getId()).isEqualTo(index);
         assertThat(productList.get(index).getName()).isEqualTo(itemName);
         assertThat(productList.get(index).getPrice()).isEqualTo(price);
         assertThat(productList.get(index).getStockQuantity()).isEqualTo(stockQuantity);
