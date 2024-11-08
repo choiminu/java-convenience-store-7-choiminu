@@ -84,14 +84,16 @@ class ProductRepositoryTest {
         String productPromotion = "탄산2+1";
 
         //when
-        Product findProduct = productRepository.findByName(productName);
+        List<Product> findProducts = productRepository.findByName(productName);
 
         //then
+        Product findProduct = findProducts.get(0);
         assertThat(findProduct.getId()).isEqualTo(productId);
         assertThat(findProduct.getName()).isEqualTo(productName);
         assertThat(findProduct.getPrice()).isEqualTo(productPrice);
         assertThat(findProduct.getStockQuantity()).isEqualTo(productQuantity);
         assertThat(findProduct.getPromotion()).isEqualTo(productPromotion);
+
     }
 
     @Test

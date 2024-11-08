@@ -1,5 +1,6 @@
 package store.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,13 +38,17 @@ public class ProductRepository {
         return products.get(id);
     }
 
-    public Product findByName(String name) {
+    public List<Product> findByName(String name) {
+        List<Product> productList = new ArrayList<>();
         for (Product value : products.values()) {
             if (value.getName().equals(name)) {
-                return value;
+                productList.add(value);
             }
         }
-        throw new IllegalArgumentException("존재하지 않는 상품입니다. 다시 입력해 주세요.");
+        if (productList.isEmpty()) {
+            throw new IllegalArgumentException("존재하지 않는 상품입니다. 다시 입력해 주세요.");
+        }
+        return productList;
     }
 
 }
