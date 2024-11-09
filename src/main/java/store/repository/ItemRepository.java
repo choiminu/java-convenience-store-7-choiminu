@@ -33,11 +33,9 @@ public class ItemRepository {
 
     public List<Item> findByItemName(String name) {
         List<Item> itemList = items.get(name);
-
         if (itemList == null || itemList.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 상품입니다. 다시 입력해 주세요.");
         }
-
         return itemList;
     }
 }
