@@ -1,17 +1,17 @@
-package store.service;
-
-import java.util.List;
-import store.domain.product.Product;
-import store.repository.ProductRepository;
-
-public class ProductService {
-    private final ProductRepository productRepository;
-
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
-
-    public List<Product> findAllProduct() {
-        return productRepository.findAll();
-    }
-}
+//package store.service;
+//
+//import java.util.List;
+//import store.domain.Product;
+//import store.repository.ProductRepository;
+//
+//public class ProductService {
+//    private final ProductRepository productRepository;
+//
+//    public ProductService(ProductRepository productRepository) {
+//        this.productRepository = productRepository;
+//    }
+//
+//    public List<Product> findAllProduct() {
+//        return productRepository.findAll();
+//    }
+//}
