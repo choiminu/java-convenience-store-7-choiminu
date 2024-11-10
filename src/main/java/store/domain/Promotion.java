@@ -21,8 +21,12 @@ public class Promotion {
         this.promotionType = PromotionType.findByPromotionType(buy, get);
     }
 
-    public void applyPromotion(int currentStock) {
+    public int getPromotionBonusQuantity(int currentStock) {
+        return promotionType.calculateBonusQuantity(currentStock);
+    }
 
+    public int getMissingQuantityForPromotion(int orderQuantity) {
+        return promotionType.calculateRequiredQuantityForPromotion(orderQuantity);
     }
 
     public boolean isDateValid() {

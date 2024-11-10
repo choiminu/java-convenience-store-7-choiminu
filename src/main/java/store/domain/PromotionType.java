@@ -13,18 +13,10 @@ public enum PromotionType {
         this.bonusQuantity = bonusQuantity;
     }
 
-    public int getRequiredQuantity() {
-        return requiredQuantity;
-    }
-
-    public int getBonusQuantity() {
-        return bonusQuantity;
-    }
-
     public static PromotionType findByPromotionType(int requiredQuantity, int bonusQuantity) {
         for (PromotionType promotionType : PromotionType.values()) {
-            if (promotionType.getRequiredQuantity() == requiredQuantity
-                    && promotionType.getBonusQuantity() == bonusQuantity) {
+            if (promotionType.requiredQuantity == requiredQuantity
+                    && promotionType.bonusQuantity == bonusQuantity) {
                 return promotionType;
             }
         }
@@ -47,26 +39,25 @@ public enum PromotionType {
         }
 
         if (this == BUY_ONE_GET_ONE_FREE) {
-            return handleBuyOneGetOneFree(orderQuantity);
+            return calculateMissingQuantityOne(orderQuantity);
         }
 
-        return calculateMissingQuantity(orderQuantity);
+        return calculateMissingQuantityTwo(orderQuantity);
     }
 
-    private int handleBuyOneGetOneFree(int orderQuantity) {
+    private int calculateMissingQuantityOne(int orderQuantity) {
         if (orderQuantity == requiredQuantity || orderQuantity % 2 != 0) {
             return bonusQuantity;
         }
         return 0;
     }
 
-    private int calculateMissingQuantity(int orderQuantity) {
-        int missingQuantity = requiredQuantity - (orderQuantity % requiredQuantity);
+    private int calculateMissingQuantityTwo(int orderQuantity) {
         if (orderQuantity == requiredQuantity) {
             return bonusQuantity;
         }
-        if (orderQuantity % requiredQuantity != 0) {
-            return missingQuantity;
+        if (orderQuantity % requiredQuantity != 0 && orderQuantity % (requiredQuantity + bonusQuantity) != 0) {
+            return requiredQuantity - (orderQuantity % requiredQuantity);
         }
         return 0;
     }
