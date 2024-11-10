@@ -32,10 +32,43 @@ public enum PromotionType {
     }
 
     public int calculateBonusQuantity(int currentStock) {
+        if (this == NONE) {
+            return 0;
+        }
         if (currentStock < requiredQuantity) {
             return 0;
         }
         return currentStock / (requiredQuantity + bonusQuantity);
+    }
+
+    public int calculateRequiredQuantityForPromotion(int orderQuantity) {
+        if (this == NONE) {
+            return 0;
+        }
+
+        if (this == BUY_ONE_GET_ONE_FREE) {
+            return handleBuyOneGetOneFree(orderQuantity);
+        }
+
+        return calculateMissingQuantity(orderQuantity);
+    }
+
+    private int handleBuyOneGetOneFree(int orderQuantity) {
+        if (orderQuantity == requiredQuantity || orderQuantity % 2 != 0) {
+            return bonusQuantity;
+        }
+        return 0;
+    }
+
+    private int calculateMissingQuantity(int orderQuantity) {
+        int missingQuantity = requiredQuantity - (orderQuantity % requiredQuantity);
+        if (orderQuantity == requiredQuantity) {
+            return bonusQuantity;
+        }
+        if (orderQuantity % requiredQuantity != 0) {
+            return missingQuantity;
+        }
+        return 0;
     }
 
 
