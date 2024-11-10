@@ -31,5 +31,12 @@ public enum PromotionType {
         return NONE;
     }
 
+    public int calculateBonusQuantity(int currentStock) {
+        if (currentStock < requiredQuantity) {
+            return 0;
+        }
+        return currentStock / (requiredQuantity + bonusQuantity);
+    }
+
 
 }

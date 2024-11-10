@@ -21,6 +21,10 @@ public class Promotion {
         this.promotionType = PromotionType.findByPromotionType(buy, get);
     }
 
+    public void applyPromotion(int currentStock) {
+
+    }
+
     public boolean isDateValid() {
         LocalDateTime today = DateTimes.now();
         return !today.isBefore(startDate.atStartOfDay()) && !today.isAfter(endDate.atStartOfDay());
