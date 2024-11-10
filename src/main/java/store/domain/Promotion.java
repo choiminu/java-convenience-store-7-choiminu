@@ -1,6 +1,8 @@
 package store.domain;
 
+import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Promotion {
     private String name;
@@ -17,6 +19,11 @@ public class Promotion {
         this.startDate = startDate;
         this.endDate = endDate;
         this.promotionType = PromotionType.findByPromotionType(buy, get);
+    }
+
+    public boolean isDateValid() {
+        LocalDateTime today = DateTimes.now();
+        return !today.isBefore(startDate.atStartOfDay()) && !today.isAfter(endDate.atStartOfDay());
     }
 
     public String getName() {
