@@ -1,4 +1,4 @@
-package store.utils;
+package store.utils.loader;
 
 import java.util.ArrayList;
 import java.util.List;
