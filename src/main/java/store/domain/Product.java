@@ -17,14 +17,13 @@ public class Product {
         this.stock += stock;
     }
 
-    public void removeStock(int stock) {
+    public int removeStock(int stock) {
         int remainingStock = this.stock - stock;
-
-        if (remainingStock < 0) {
+        if (remainingStock < 0 && promotionName.equals("null")) {
             throw new IllegalArgumentException("재고가 부족합니다."); // TODO 예외 메세지 수정
         }
-
         this.stock = remainingStock;
+        return remainingStock;
     }
 
     public String getName() {
