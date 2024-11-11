@@ -21,8 +21,16 @@ public class Promotion {
         this.promotionType = PromotionType.findByPromotionType(buy, get);
     }
 
+    public int getNonPromotableQuantity(int orderQuantity, int currentStock) {
+        return promotionType.calculateNonPromotableQuantity(orderQuantity, currentStock);
+    }
+
     public int getPromotionBonusQuantity(int currentStock) {
         return promotionType.calculateBonusQuantity(currentStock);
+    }
+
+    public int getExcepedBonusQuantity(int orderQuantity) {
+        return promotionType.calculateBonusQuantity(orderQuantity);
     }
 
     public int getMissingQuantityForPromotion(int orderQuantity) {

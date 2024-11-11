@@ -21,18 +21,18 @@ public class OrderProduct {
     public static OrderProduct createOrderProduct(List<Product> products, int orderCount) {
         Map<Product, Integer> orderCounts = new HashMap<>();
         Product promotionProduct = findPromotionProduct(products);
-
+        int remainCount = orderCount;
         int before = promotionProduct.getStock();
         int insufficientStock = promotionProduct.removeStock(orderCount);
+        remainCount -= before - insufficientStock;
 
-        orderCount -= before;
-
-        if (orderCount > 0) {
-            handleInsufficientStock(products, orderCount, insufficientStock);
+        if (remainCount > 0) {
+            handleInsufficientStock(products, remainCount, insufficientStock);
             Product generalProduct = findGenaralProduct(products);
-            orderCounts.put(generalProduct, orderCount);
+            orderCounts.put(generalProduct, remainCount);
         }
-        orderCounts.put(promotionProduct, insufficientStock);
+
+        orderCounts.put(promotionProduct, before - insufficientStock);
         return new OrderProduct(products, promotionProduct.getPrice(), orderCounts);
     }
 
@@ -66,5 +66,17 @@ public class OrderProduct {
 
     public int getOrderPrice() {
         return orderPrice;
+    }
+
+    public int getOrderQuantity() {
+        return count.values()
+                .stream()
+                .mapToInt(i -> i)
+                .sum();
+    }
+
+
+    public String getProductName() {
+        return products.getFirst().getName();
     }
 }

@@ -65,7 +65,7 @@ class OrderProductTest {
         orderItems.add(product2);
 
         // when
-        OrderProduct orderProduct = OrderProduct.createOrderProduct(orderItems, 5);
+        OrderProduct orderProduct = OrderProduct.createOrderProduct(orderItems, 3);
         orderProduct.cancel();
 
         // then

@@ -17,23 +17,17 @@ class ProductLoaderTest {
     }
 
     @Test
-    public void 첫_번째_상품_검증() {
+    public void 상품검증() {
         assertEquals(productList.get(0).getName(), "콜라");
         assertEquals(productList.get(0).getPrice(), 1000);
         assertEquals(productList.get(0).getStock(), 10);
         assertEquals(productList.get(0).getPromotionName(), "탄산2+1");
-    }
 
-    @Test
-    public void 두_번째_상품_검증() {
         assertEquals(productList.get(1).getName(), "콜라");
         assertEquals(productList.get(1).getPrice(), 1000);
         assertEquals(productList.get(1).getStock(), 10);
         assertEquals(productList.get(1).getPromotionName(), "null");
-    }
 
-    @Test
-    public void 세_번째_상품_검증() {
         assertEquals(productList.get(2).getName(), "사이다");
         assertEquals(productList.get(2).getPrice(), 1000);
         assertEquals(productList.get(2).getStock(), 8);

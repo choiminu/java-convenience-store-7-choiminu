@@ -133,4 +133,15 @@ class PromotionTypeTest {
         assertEquals(expectedQuantity, result);
     }
 
+    @Test
+    public void test() {
+        //given
+        int i = BUY_TWO_GET_ONE_FREE.calculateNonPromotableQuantity(10, 7);
+        //when
+        System.out.println("i = " + i);
+
+        //then
+    }
+
+
 }

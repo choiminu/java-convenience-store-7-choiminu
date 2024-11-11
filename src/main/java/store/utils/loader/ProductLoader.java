@@ -11,8 +11,9 @@ public class ProductLoader {
     private final static int PRODUCT_QUANTITY_INDEX = 2;
     private final static int PRODUCT_PROMOTION_NAME_INDEX = 3;
 
+    private static List<Product> products = new ArrayList<>();
+
     public static List<Product> loadProductsFromFile(String filePath) {
-        List<Product> products = new ArrayList<>();
         List<String> fileLines = FileLoader.loadFile(filePath);
 
         for (String fileLine : fileLines) {

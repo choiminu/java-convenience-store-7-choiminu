@@ -62,5 +62,16 @@ public enum PromotionType {
         return 0;
     }
 
+    public int calculateNonPromotableQuantity(int orderQuantity, int availableStock) {
+        if (this == NONE || availableStock < requiredQuantity) {
+            return orderQuantity;
+        }
+        int promotableSets = Math.min(orderQuantity / (requiredQuantity + bonusQuantity),
+                availableStock / (requiredQuantity + bonusQuantity));
+        int promotableQuantity = promotableSets * (requiredQuantity + bonusQuantity);
+        int nonPromotableQuantity = orderQuantity - promotableQuantity;
+        return Math.max(nonPromotableQuantity, 0);
+    }
+
 
 }
