@@ -40,7 +40,7 @@ class ProductTest {
         int result = product.removeStock(11);
 
         //then
-        assertEquals(result, -1);
+        assertEquals(result, 0);
     }
 
     @Test

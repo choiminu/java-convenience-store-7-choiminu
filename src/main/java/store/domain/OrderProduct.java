@@ -1,30 +1,70 @@
 package store.domain;
 
-public class OrderProduct {
-    private Product product;
-    private int orderPrice;
-    private int count;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-    public OrderProduct(Product product, int orderPrice, int count) {
-        this.product = product;
+public class OrderProduct {
+    private List<Product> products;
+    private int orderPrice;
+    private Map<Product, Integer> count = new HashMap<>();
+
+    private OrderProduct() {
+    }
+
+    public OrderProduct(List<Product> products, int orderPrice, Map<Product, Integer> count) {
+        this.products = products;
         this.orderPrice = orderPrice;
         this.count = count;
     }
 
-    public static OrderProduct createOrderProduct(Product product, int orderCount) {
-        product.removeStock(orderCount);
-        return new OrderProduct(product, product.getPrice(), orderCount);
+    public static OrderProduct createOrderProduct(List<Product> products, int orderCount) {
+        Map<Product, Integer> orderCounts = new HashMap<>();
+        Product promotionProduct = findPromotionProduct(products);
+
+        int before = promotionProduct.getStock();
+        int insufficientStock = promotionProduct.removeStock(orderCount);
+
+        orderCount -= before;
+
+        if (orderCount > 0) {
+            handleInsufficientStock(products, orderCount, insufficientStock);
+            Product generalProduct = findGenaralProduct(products);
+            orderCounts.put(generalProduct, orderCount);
+        }
+        orderCounts.put(promotionProduct, insufficientStock);
+        return new OrderProduct(products, promotionProduct.getPrice(), orderCounts);
     }
 
-    public Product getProduct() {
-        return product;
+    private static void handleInsufficientStock(List<Product> products, int orderCount, int insufficientStock) {
+        Product generalProduct = findGenaralProduct(products);
+        generalProduct.removeStock(orderCount - insufficientStock);
+    }
+
+    private static Product findPromotionProduct(List<Product> products) {
+        return products.stream()
+                .filter(product -> !product.getPromotionName().equals("null"))
+                .findFirst()
+                .orElse(products.getFirst());
+    }
+
+    private static Product findGenaralProduct(List<Product> products) {
+        return products.stream()
+                .filter(product -> product.getPromotionName().equals("null"))
+                .findFirst()
+                .orElse(products.getFirst());
     }
 
     public void cancel() {
-        this.product.addStock(count);
+        products.forEach(product -> {
+            Integer productCount = count.get(product);
+            if (productCount != null) {
+                product.addStock(productCount);
+            }
+        });
     }
 
-    public int getTotalPrice() {
-        return orderPrice * count;
+    public int getOrderPrice() {
+        return orderPrice;
     }
 }

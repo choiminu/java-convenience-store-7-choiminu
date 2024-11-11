@@ -22,8 +22,10 @@ public class Product {
         if (remainingStock < 0 && promotionName.equals("null")) {
             throw new IllegalArgumentException("재고가 부족합니다."); // TODO 예외 메세지 수정
         }
-        this.stock = remainingStock;
-        return remainingStock;
+        if (remainingStock > 0) {
+            return this.stock = remainingStock;
+        }
+        return this.stock = 0;
     }
 
     public String getName() {
