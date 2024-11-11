@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class ProductParser {
 
+
     public Map<String, Integer> parseProductQuantities(String input) {
         Map<String, Integer> map = new HashMap<>();
         for (String item : input.split(",")) {

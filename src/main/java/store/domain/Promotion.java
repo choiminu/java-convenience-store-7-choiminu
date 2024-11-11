@@ -1,8 +1,6 @@
 package store.domain;
 
-import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class Promotion {
     private String name;
@@ -38,8 +36,8 @@ public class Promotion {
     }
 
     public boolean isDateValid() {
-        LocalDateTime today = DateTimes.now();
-        return !today.isBefore(startDate.atStartOfDay()) && !today.isAfter(endDate.atStartOfDay());
+        LocalDate today = LocalDate.now(); // 현재 날짜만 가져오기
+        return !today.isBefore(startDate) && !today.isAfter(endDate);
     }
 
     public String getName() {

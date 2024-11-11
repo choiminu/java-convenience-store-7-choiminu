@@ -62,6 +62,7 @@ public class OrderService {
 
     public Order createOrder(Map<String, Integer> shoppingCart, Map<Product, Integer> disCountMap) {
         List<OrderProduct> orderProducts = new ArrayList<>();
+
         for (String itemName : shoppingCart.keySet()) {
             int orderQuantity = shoppingCart.get(itemName);
             List<Product> findProduct = productService.findProductByName(itemName);

@@ -20,15 +20,20 @@ public class OrderProduct {
 
     public static OrderProduct createOrderProduct(List<Product> products, int orderCount) {
         Map<Product, Integer> orderCounts = new HashMap<>();
+
         Product promotionProduct = findPromotionProduct(products);
+
         int remainCount = orderCount;
+
         int before = promotionProduct.getStock();
+
         int insufficientStock = promotionProduct.removeStock(orderCount);
+
         remainCount -= before - insufficientStock;
 
         if (remainCount > 0) {
-            handleInsufficientStock(products, remainCount, insufficientStock);
-            Product generalProduct = findGenaralProduct(products);
+            Product generalProduct = findGeneralProduct(products);
+            generalProduct.removeStock(orderCount - insufficientStock);
             orderCounts.put(generalProduct, remainCount);
         }
 
@@ -36,23 +41,19 @@ public class OrderProduct {
         return new OrderProduct(products, promotionProduct.getPrice(), orderCounts);
     }
 
-    private static void handleInsufficientStock(List<Product> products, int orderCount, int insufficientStock) {
-        Product generalProduct = findGenaralProduct(products);
-        generalProduct.removeStock(orderCount - insufficientStock);
-    }
 
     private static Product findPromotionProduct(List<Product> products) {
         return products.stream()
-                .filter(product -> !product.getPromotionName().equals("null"))
+                .filter(product -> product.getPromotionName() != null && !product.getPromotionName().isEmpty())
                 .findFirst()
-                .orElse(products.getFirst());
+                .orElseThrow(() -> new IllegalArgumentException("프로모션 상품이 없습니다."));
     }
 
-    private static Product findGenaralProduct(List<Product> products) {
+    private static Product findGeneralProduct(List<Product> products) {
         return products.stream()
-                .filter(product -> product.getPromotionName().equals("null"))
+                .filter(product -> product.getPromotionName() == null || product.getPromotionName().isEmpty())
                 .findFirst()
-                .orElse(products.getFirst());
+                .orElseThrow(() -> new IllegalArgumentException("일반 상품이 없습니다."));
     }
 
     public void cancel() {
@@ -75,8 +76,7 @@ public class OrderProduct {
                 .sum();
     }
 
-
     public String getProductName() {
-        return products.getFirst().getName();
+        return products.isEmpty() ? "" : products.get(0).getName(); // 비어있을 경우 빈 문자열 반환
     }
 }

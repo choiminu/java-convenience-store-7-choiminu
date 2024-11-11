@@ -7,8 +7,8 @@ import store.utils.loader.ProductLoader;
 
 public class ProductService {
 
-    private final String filePath = "src/main/resources/products.md";
-    private final List<Product> products = ProductLoader.loadProductsFromFile(filePath);
+    private static final String filePath = "src/main/resources/products.md";
+    private static final List<Product> products = ProductLoader.loadProductsFromFile(filePath);
 
     public List<Product> findAll() {
         return products;
@@ -21,6 +21,14 @@ public class ProductService {
             }
         }
         return products.getFirst();
+    }
+
+    public void checkIfProductIsAvailable(String name) {
+        products.stream()
+                .filter(p -> p.getName().equals(name))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다. 다시 입력해 주세요."));
+
     }
 
     public List<Product> findProductByName(String itemName) {
@@ -37,9 +45,9 @@ public class ProductService {
 
     public Product findGeneralProductByName(String name) {
         return findAll().stream()
-                .filter(product -> product.getName().equals(name) && product.getPromotionName().equals("null"))
-                .findFirst()
-                .orElse(null);
+                .filter(product -> product.getName().equals(name) && "null".equals(product.getPromotionName()))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다. 다시 입력해 주세요."));
     }
 
     public Promotion findPromotionByProductName(List<Promotion> promotions, String name) {

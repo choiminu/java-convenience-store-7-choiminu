@@ -20,7 +20,7 @@ public class Product {
     public int removeStock(int stock) {
         int remainingStock = this.stock - stock;
         if (remainingStock < 0 && promotionName.equals("null")) {
-            throw new IllegalArgumentException("재고가 부족합니다."); // TODO 예외 메세지 수정
+            throw new IllegalArgumentException("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
         }
         if (remainingStock > 0) {
             return this.stock = remainingStock;

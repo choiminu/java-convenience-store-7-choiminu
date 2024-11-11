@@ -86,4 +86,8 @@ public class OutputView {
         System.out.printf("%-12s%18s\n", "멤버십할인", currencyFormat.format(-order.getMembershipDiscountAmount()));
         System.out.printf("%-12s%18s\n", "내실돈", currencyFormat.format(order.getFinalPriceWithMembership()));
     }
+
+    public void printErrorMessage(String errorMessage) {
+        System.out.println("[ERROR] " + errorMessage);
+    }
 }
