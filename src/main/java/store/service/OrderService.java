@@ -16,12 +16,10 @@ public class OrderService {
     PromotionService promotionService = new PromotionService();
     ProductParser productParser = new ProductParser();
 
-    // 먼저 사용자의 입력을 변환한다.
     public Map<String, Integer> getShoppingCart(String userInput) {
         return productParser.parseProductQuantities(userInput);
     }
 
-    // 사용자가 놓친 물건이 있는지 확인.
     public Map<String, Integer> getMissingItemsForPromotion(Map<String, Integer> shoppingCart) {
         Map<String, Integer> missingProduct = new LinkedHashMap<>();
         for (String name : shoppingCart.keySet()) {
@@ -33,7 +31,6 @@ public class OrderService {
         return missingProduct;
     }
 
-    // 주문 수량 중 프로모션 미적용 수량을 계산
     public int calculateNonPromotableQuantity(List<Product> products, int orderQuantity) {
         int totalNonPromotableQuantity = 0;
 
@@ -44,7 +41,6 @@ public class OrderService {
         if (promotion != null && productss.getStock() < orderQuantity) {
             totalNonPromotableQuantity = promotion.getNonPromotableQuantity(orderQuantity, productss.getStock());
         }
-
         return totalNonPromotableQuantity;
     }
 

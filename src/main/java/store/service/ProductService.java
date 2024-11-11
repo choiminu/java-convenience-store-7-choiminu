@@ -1,6 +1,7 @@
 package store.service;
 
 import java.util.List;
+import java.util.Map;
 import store.domain.Product;
 import store.domain.Promotion;
 import store.utils.loader.ProductLoader;
@@ -21,6 +22,27 @@ public class ProductService {
             }
         }
         return products.getFirst();
+    }
+
+    public void checkQuantity(Map<String, Integer> shoppingCart) {
+
+        int currentStock = 0;
+
+        for (String name : shoppingCart.keySet()) {
+            int stock = shoppingCart.get(name);
+
+            List<Product> productByName = findProductByName(name);
+
+            for (Product product : productByName) {
+                currentStock += product.getStock();
+            }
+
+            if (stock > currentStock) {
+                throw new IllegalArgumentException("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+            }
+        }
+
+
     }
 
     public void checkIfProductIsAvailable(String name) {

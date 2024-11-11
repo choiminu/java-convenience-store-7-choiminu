@@ -26,14 +26,31 @@ public class ConvenienceController {
                 displayOwnedProducts();
                 String input = inputView.readItem();
                 Map<String, Integer> shoppingCart = getShoppingCart(input);
+
+                try {
+                    productService.checkQuantity(shoppingCart);
+                }catch (IllegalArgumentException e) {
+                    outputView.printErrorMessage(e.getMessage());
+                    input = inputView.readItem();
+                    shoppingCart = getShoppingCart(input);
+                }
+
+
                 Map<String, Integer> missingItems = getMissingItems(shoppingCart);
+
+
                 handleMissingItems(missingItems, shoppingCart);
                 handleNonPromotableItems(shoppingCart);
+
+
                 Order order = null;
                 try {
                     order = createOrder(shoppingCart);
                 } catch (IllegalArgumentException e) {
-                    System.out.println("캐치");
+                    outputView.printErrorMessage(e.getMessage());
+                    input = inputView.readItem();
+                    shoppingCart = getShoppingCart(input);
+                    missingItems = getMissingItems(shoppingCart);
                 }
                 applyMembershipDiscount(order);  // 멤버십 할인 적용
                 outputView.printOrderSummary(order);
@@ -50,7 +67,6 @@ public class ConvenienceController {
     private Map<String, Integer> getShoppingCart(String input) {
         try {
             Map<String, Integer> shoppingCart = orderService.getShoppingCart(input);
-
             for (String s : shoppingCart.keySet()) {
                 productService.checkIfProductIsAvailable(s);
             }
@@ -141,13 +157,12 @@ public class ConvenienceController {
     private void addDiscount(String itemName, int quantity, Map<Product, Integer> discountList) {
         try {
             Product product = productService.findPromotionProductByName(itemName);
-            List<Product> productByName = productService.findProductByName(itemName);
-            Product promotionProductFromList = productService.findPromotionProductFromList(productByName);
+            Product generalProductByName = productService.findGeneralProductByName(itemName);
             Promotion promotion = promotionService.findByName(product.getPromotionName());
 
             if (promotion != null && promotion.isDateValid()) {  // 프로모션이 유효한 경우만 추가
                 int discountQuantity = calculateDiscountQuantity(promotion, quantity, product);
-                discountList.put(product, discountQuantity);
+                    discountList.put(product, discountQuantity);
             }
         } catch (Exception e) {
             outputView.printErrorMessage("잘못된 입력입니다. 다시 입력해 주세요.");

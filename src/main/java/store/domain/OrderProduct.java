@@ -20,7 +20,6 @@ public class OrderProduct {
 
     public static OrderProduct createOrderProduct(List<Product> products, int orderCount) {
         Map<Product, Integer> orderCounts = new HashMap<>();
-
         Product promotionProduct = findPromotionProduct(products);
 
         int remainCount = orderCount;
@@ -31,9 +30,10 @@ public class OrderProduct {
 
         remainCount -= before - insufficientStock;
 
+
         if (remainCount > 0) {
             Product generalProduct = findGeneralProduct(products);
-            generalProduct.removeStock(orderCount - insufficientStock);
+            generalProduct.removeStock(remainCount);
             orderCounts.put(generalProduct, remainCount);
         }
 
@@ -51,9 +51,8 @@ public class OrderProduct {
 
     private static Product findGeneralProduct(List<Product> products) {
         return products.stream()
-                .filter(product -> product.getPromotionName() == null || product.getPromotionName().isEmpty())
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("일반 상품이 없습니다."));
+                .filter(product -> product.getPromotionName().equals("null"))
+                .findFirst().orElse(null);
     }
 
     public void cancel() {
